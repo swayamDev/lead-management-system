@@ -77,7 +77,7 @@ export function CreateUserDialog() {
         <DialogHeader>
           <DialogTitle>Create a team member</DialogTitle>
           <DialogDescription>
-            There's no public signup - accounts are provisioned here. Share the
+            There&apos;s no public signup - accounts are provisioned here. Share the
             password with them directly.
           </DialogDescription>
         </DialogHeader>

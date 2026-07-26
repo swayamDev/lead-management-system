@@ -22,7 +22,7 @@ export default async function AdminUsersPage() {
         <div>
           <h1 className="font-heading text-xl font-semibold">Team</h1>
           <p className="text-sm text-muted-foreground">
-            Admin and member accounts. There's no public signup - create accounts here.
+            Admin and member accounts. There&apos;s no public signup - create accounts here.
           </p>
         </div>
         <CreateUserDialog />
