@@ -3,10 +3,15 @@ import { Geist, Geist_Mono, Outfit, Oxanium } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import { Toaster } from "@/components/ui/sonner";
+import { ThemeProvider } from "@/components/theme-provider";
+import { SiteFooter } from "@/components/site-footer";
 
-const oxaniumHeading = Oxanium({subsets:['latin'],variable:'--font-heading'});
+const oxaniumHeading = Oxanium({
+  subsets: ["latin"],
+  variable: "--font-heading",
+});
 
-const outfit = Outfit({subsets:['latin'],variable:'--font-sans'});
+const outfit = Outfit({ subsets: ["latin"], variable: "--font-sans" });
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -31,11 +36,23 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={cn("h-full", "antialiased", geistSans.variable, geistMono.variable, "font-sans", outfit.variable, oxaniumHeading.variable)}
+      suppressHydrationWarning
+      className={cn(
+        "h-full",
+        "antialiased",
+        geistSans.variable,
+        geistMono.variable,
+        "font-sans",
+        outfit.variable,
+        oxaniumHeading.variable,
+      )}
     >
-      <body className="min-h-full flex flex-col">
-        {children}
-        <Toaster position="top-right" />
+      <body className="flex min-h-full flex-col">
+        <ThemeProvider>
+          <div className="flex flex-1 flex-col">{children}</div>
+          <SiteFooter />
+          <Toaster position="top-right" />
+        </ThemeProvider>
       </body>
     </html>
   );
