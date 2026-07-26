@@ -9,6 +9,17 @@ export const auth = betterAuth({
   emailAndPassword: {
     enabled: true,
   },
+  session: {
+    // Without this, every getSession() call - which is every page
+    // load and every navigation - hits the database. This signs a
+    // short-lived copy of the session into the cookie itself, so most
+    // checks are verified from the cookie alone; the DB is only
+    // re-queried once the cache expires (or the session changes).
+    cookieCache: {
+      enabled: true,
+      maxAge: 60, // seconds
+    },
+  },
   user: {
     additionalFields: {
       role: {
