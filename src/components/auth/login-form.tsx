@@ -46,7 +46,6 @@ export function LoginForm() {
 
     toast.success("Signed in");
     router.push(searchParams.get("from") ?? "/dashboard");
-    router.refresh();
   }
 
   return (

@@ -82,7 +82,6 @@ export function AppSidebar({ role, name }: { role: Role; name: string }) {
           onClick={async () => {
             await authClient.signOut();
             router.push("/login");
-            router.refresh();
           }}
         >
           <HugeiconsIcon icon={Logout01Icon} size={14} />
