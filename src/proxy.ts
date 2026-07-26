@@ -7,7 +7,7 @@ import { getSessionCookie } from "better-auth/cookies";
  * checks (role, ownership) happen server-side in each route handler and
  * page, since a valid cookie only proves "signed in", not "allowed".
  */
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
   const sessionCookie = getSessionCookie(request);
 
   if (!sessionCookie) {
