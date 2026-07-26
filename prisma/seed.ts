@@ -5,6 +5,7 @@
  *
  * Run with: pnpm db:seed
  */
+import "dotenv/config";
 import { auth } from "@/lib/auth";
 import prisma from "@/lib/prisma";
 
@@ -13,7 +14,12 @@ const ADMIN_PASSWORD = "Admin1234!";
 const MEMBER_EMAIL = "member@digitalheroes.test";
 const MEMBER_PASSWORD = "Member1234!";
 
-async function ensureUser(email: string, password: string, name: string, role: "ADMIN" | "MEMBER") {
+async function ensureUser(
+  email: string,
+  password: string,
+  name: string,
+  role: "ADMIN" | "MEMBER",
+) {
   const existing = await prisma.user.findUnique({ where: { email } });
   if (existing) {
     console.log(`- ${email} already exists, skipping`);
@@ -35,8 +41,18 @@ async function ensureUser(email: string, password: string, name: string, role: "
 
 async function main() {
   console.log("Seeding users...");
-  const admin = await ensureUser(ADMIN_EMAIL, ADMIN_PASSWORD, "Alex Admin", "ADMIN");
-  const member = await ensureUser(MEMBER_EMAIL, MEMBER_PASSWORD, "Morgan Member", "MEMBER");
+  await ensureUser(
+    ADMIN_EMAIL,
+    ADMIN_PASSWORD,
+    "Alex Admin",
+    "ADMIN",
+  );
+  const member = await ensureUser(
+    MEMBER_EMAIL,
+    MEMBER_PASSWORD,
+    "Morgan Member",
+    "MEMBER",
+  );
 
   const existingLeads = await prisma.lead.count();
   if (existingLeads === 0) {
