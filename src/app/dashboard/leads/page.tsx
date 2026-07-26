@@ -20,8 +20,10 @@ export default async function LeadsPage({
   const params = await searchParams;
   const query = leadListQuerySchema.parse(params);
 
-  const { leads, pagination } = await listLeads(user, query);
-  const teamMembers = user.role === "ADMIN" ? await listUsers(user) : [];
+  const [{ leads, pagination }, teamMembers] = await Promise.all([
+    listLeads(user, query),
+    user.role === "ADMIN" ? listUsers(user) : Promise.resolve([]),
+  ]);
 
   return (
     <div className="flex flex-col gap-4">

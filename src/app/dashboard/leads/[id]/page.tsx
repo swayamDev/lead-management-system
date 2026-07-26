@@ -19,8 +19,10 @@ export default async function LeadDetailPage({
   const { id } = await params;
   const user = await requireUser();
   const lead = await getLeadForUser(user, id);
-  const activity = await listActivity(id);
-  const teamMembers = permissions.canAssignLead(user.role) ? await listUsers(user) : [];
+  const [activity, teamMembers] = await Promise.all([
+    listActivity(id),
+    permissions.canAssignLead(user.role) ? listUsers(user) : Promise.resolve([]),
+  ]);
 
   return (
     <div className="flex flex-col gap-6">
