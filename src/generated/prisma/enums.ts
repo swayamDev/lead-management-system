@@ -9,7 +9,47 @@
 * 🟢 You can import this file directly.
 */
 
+export const Role = {
+  ADMIN: 'ADMIN',
+  MEMBER: 'MEMBER'
+} as const
+
+export type Role = (typeof Role)[keyof typeof Role]
 
 
-// This file is empty because there are no enums in the schema.
-export {}
+export const LeadStatus = {
+  NEW: 'NEW',
+  CONTACTED: 'CONTACTED',
+  QUALIFIED: 'QUALIFIED',
+  PROPOSAL_SENT: 'PROPOSAL_SENT',
+  NEGOTIATION: 'NEGOTIATION',
+  WON: 'WON',
+  LOST: 'LOST'
+} as const
+
+export type LeadStatus = (typeof LeadStatus)[keyof typeof LeadStatus]
+
+
+export const LeadSource = {
+  WEBSITE: 'WEBSITE',
+  REFERRAL: 'REFERRAL',
+  LINKEDIN: 'LINKEDIN',
+  COLD_OUTREACH: 'COLD_OUTREACH',
+  EVENT: 'EVENT',
+  OTHER: 'OTHER'
+} as const
+
+export type LeadSource = (typeof LeadSource)[keyof typeof LeadSource]
+
+
+export const ActivityType = {
+  LEAD_CREATED: 'LEAD_CREATED',
+  STATUS_CHANGED: 'STATUS_CHANGED',
+  ASSIGNED: 'ASSIGNED',
+  UNASSIGNED: 'UNASSIGNED',
+  NOTE_ADDED: 'NOTE_ADDED',
+  LEAD_UPDATED: 'LEAD_UPDATED',
+  LEAD_DELETED: 'LEAD_DELETED'
+} as const
+
+export type ActivityType = (typeof ActivityType)[keyof typeof ActivityType]
