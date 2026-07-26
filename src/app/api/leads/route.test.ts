@@ -50,7 +50,7 @@ describe("GET /api/leads", () => {
     expect(mockedPrisma.lead.findMany).toHaveBeenCalledWith(
       expect.objectContaining({
         where: expect.objectContaining({ assignedToId: "member-1" }),
-      })
+      }),
     );
   });
 
@@ -90,8 +90,15 @@ describe("POST /api/leads", () => {
       name: "Alex Admin",
       email: "admin@test.com",
     });
-    mockedPrisma.lead.create.mockResolvedValue({ id: "lead-1", status: "NEW" });
-    mockedPrisma.activity.create.mockResolvedValue({ id: "activity-1" });
+    // Test mocks only need the fields the route actually reads - casting
+    // to the full Prisma return type isn't worth it here.
+    /* eslint-disable @typescript-eslint/no-explicit-any */
+    mockedPrisma.lead.create.mockResolvedValue({
+      id: "lead-1",
+      status: "NEW",
+    } as any);
+    mockedPrisma.activity.create.mockResolvedValue({ id: "activity-1" } as any);
+    /* eslint-enable @typescript-eslint/no-explicit-any */
 
     const request = new NextRequest("http://localhost/api/leads", {
       method: "POST",
