@@ -1,16 +1,14 @@
 "use client"
 
+import { useTheme } from "next-themes"
 import { Toaster as Sonner, type ToasterProps } from "sonner"
 
-/**
- * Thin wrapper so toasts pick up the app's existing design tokens
- * instead of sonner's defaults. No next-themes dependency - this
- * project doesn't have a theme switcher, so we just point sonner at
- * the CSS variables already defined in globals.css.
- */
 const Toaster = ({ ...props }: ToasterProps) => {
+  const { theme = "system" } = useTheme()
+
   return (
     <Sonner
+      theme={theme as ToasterProps["theme"]}
       className="toaster group"
       style={
         {
