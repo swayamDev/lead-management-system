@@ -26,6 +26,14 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Digital Heroes CRM | Lead Management",
   description: "A lead capture and management platform for small sales teams.",
+  manifest: "/manifest.json",
+  icons: {
+    icon: [
+      { url: "/icon0.svg", type: "image/svg+xml" },
+      { url: "/icon1.png", type: "image/png" },
+    ],
+    apple: "/apple-icon.png",
+  },
 };
 
 export default function RootLayout({
