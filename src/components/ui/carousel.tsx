@@ -96,6 +96,11 @@ function Carousel({
 
   React.useEffect(() => {
     if (!api) return
+    // The embla `api` only exists once embla's own effect sets it, so
+    // there's no way to compute the initial scroll-state via a lazy
+    // useState initializer (unlike src/hooks/use-mobile.ts) - it has to
+    // be synced here the first time `api` becomes available.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     onSelect(api)
     api.on("reInit", onSelect)
     api.on("select", onSelect)
