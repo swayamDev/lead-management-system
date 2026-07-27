@@ -7,7 +7,8 @@ import { ThemeToggle } from "@/components/theme-toggle";
  */
 export function SiteFooter() {
   return (
-    <footer className="mt-auto flex items-center justify-between gap-4 border-t px-4 py-3 text-xs text-muted-foreground">
+    <footer className="text-muted-foreground mt-auto flex items-center justify-evenly gap-4 border-t px-4 py-3 text-xs">
+      <ThemeToggle />
       <a
         href="https://digitalheroesco.com"
         target="_blank"
@@ -16,7 +17,6 @@ export function SiteFooter() {
       >
         Built for Digital Heroes Training Task
       </a>
-      <ThemeToggle />
     </footer>
   );
 }

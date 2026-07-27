@@ -3,7 +3,11 @@
 import { useEffect, useState } from "react";
 import { useTheme } from "next-themes";
 import { HugeiconsIcon } from "@hugeicons/react";
-import { ComputerDesk01Icon, Moon02Icon, Sun01Icon } from "@hugeicons/core-free-icons";
+import {
+  ComputerDesk01Icon,
+  Moon02Icon,
+  Sun01Icon,
+} from "@hugeicons/core-free-icons";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -34,13 +38,16 @@ export function ThemeToggle() {
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger render={<Button variant="outline" size="icon" />}>
+      <DropdownMenuTrigger render={<Button variant="ghost" size="icon" />}>
         <HugeiconsIcon icon={mounted ? current.icon : Sun01Icon} size={16} />
         <span className="sr-only">Toggle theme</span>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         {options.map((option) => (
-          <DropdownMenuItem key={option.value} onClick={() => setTheme(option.value)}>
+          <DropdownMenuItem
+            key={option.value}
+            onClick={() => setTheme(option.value)}
+          >
             <HugeiconsIcon icon={option.icon} size={16} />
             {option.label}
           </DropdownMenuItem>
