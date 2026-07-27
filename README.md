@@ -26,7 +26,7 @@ cp .env.example .env
 # fill in DATABASE_URL / DIRECT_URL (a free Neon project works well)
 # fill in BETTER_AUTH_SECRET with any long random string
 
-npx prisma generate
+pnpm prisma generate
 pnpm db:migrate        # applies schema + runs prisma/seed.ts automatically
 pnpm dev
 ```
@@ -38,10 +38,10 @@ Then open `http://localhost:3000` for the public capture form, or
 
 Running `pnpm db:migrate` (or `pnpm db:seed` on its own) creates:
 
-| Role   | Email                       | Password       |
-|--------|------------------------------|----------------|
-| Admin  | admin@digitalheroes.test     | Admin1234!     |
-| Member | member@digitalheroes.test    | Member1234!    |
+| Role   | Email                     | Password    |
+| ------ | ------------------------- | ----------- |
+| Admin  | admin@digitalheroes.test  | Admin1234!  |
+| Member | member@digitalheroes.test | Member1234! |
 
 Rotate/replace these before sharing the deployed app publicly.
 
@@ -101,32 +101,32 @@ success or `{ error: string }` on failure.
 
 ### Public
 
-| Method | Route | Auth | Description |
-|---|---|---|---|
+| Method | Route               | Auth | Description                                                                  |
+| ------ | ------------------- | ---- | ---------------------------------------------------------------------------- |
 | `POST` | `/api/public/leads` | none | Submit the public capture form. `201` on success, `400` on validation error. |
 
 ### Leads
 
-| Method | Route | Auth | Description |
-|---|---|---|---|
-| `GET` | `/api/leads` | any | Paginated, filtered list. Query params: `page`, `perPage` (max 100), `status`, `assignedTo` (admin only), `company`, `source`, `search`. |
-| `POST` | `/api/leads` | admin | Create a lead manually. `403` for members. |
-| `GET` | `/api/leads/:id` | owner or admin | Fetch one lead with notes. `403` if it's not yours, `404` if it doesn't exist. |
-| `PATCH` | `/api/leads/:id` | owner or admin | Update status/fields. Reassignment (`assignedToId`) is admin-only - `403` for members. |
-| `DELETE` | `/api/leads/:id` | admin | `403` for members. |
+| Method   | Route            | Auth           | Description                                                                                                                              |
+| -------- | ---------------- | -------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| `GET`    | `/api/leads`     | any            | Paginated, filtered list. Query params: `page`, `perPage` (max 100), `status`, `assignedTo` (admin only), `company`, `source`, `search`. |
+| `POST`   | `/api/leads`     | admin          | Create a lead manually. `403` for members.                                                                                               |
+| `GET`    | `/api/leads/:id` | owner or admin | Fetch one lead with notes. `403` if it's not yours, `404` if it doesn't exist.                                                           |
+| `PATCH`  | `/api/leads/:id` | owner or admin | Update status/fields. Reassignment (`assignedToId`) is admin-only - `403` for members.                                                   |
+| `DELETE` | `/api/leads/:id` | admin          | `403` for members.                                                                                                                       |
 
 ### Notes & activity
 
-| Method | Route | Auth | Description |
-|---|---|---|---|
-| `GET` / `POST` | `/api/leads/:id/notes` | owner or admin | List / add a timestamped note. |
-| `GET` | `/api/leads/:id/activity` | owner or admin | The lead's full audit trail, oldest first. |
+| Method         | Route                     | Auth           | Description                                |
+| -------------- | ------------------------- | -------------- | ------------------------------------------ |
+| `GET` / `POST` | `/api/leads/:id/notes`    | owner or admin | List / add a timestamped note.             |
+| `GET`          | `/api/leads/:id/activity` | owner or admin | The lead's full audit trail, oldest first. |
 
 ### Admin
 
-| Method | Route | Auth | Description |
-|---|---|---|---|
-| `GET` | `/api/admin/users` | admin | List all accounts. |
+| Method | Route              | Auth  | Description                              |
+| ------ | ------------------ | ----- | ---------------------------------------- |
+| `GET`  | `/api/admin/users` | admin | List all accounts.                       |
 | `POST` | `/api/admin/users` | admin | Provision a new Admin or Member account. |
 
 Status codes used throughout: `200` (ok), `201` (created), `400` (validation),
