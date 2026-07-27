@@ -150,6 +150,10 @@ export async function updateLead(user: CurrentUser, leadId: string, input: Updat
     throw new ForbiddenError("You do not have access to this lead.");
   }
 
+  if (input.status !== undefined && !permissions.canChangeLeadStatus(user.role)) {
+    throw new ForbiddenError("You do not have permission to change this lead's status.");
+  }
+
   if (input.assignedToId !== undefined && !permissions.canAssignLead(user.role)) {
     throw new ForbiddenError("Only admins can assign leads.");
   }

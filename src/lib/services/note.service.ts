@@ -2,9 +2,14 @@ import prisma from "@/lib/prisma";
 import type { CurrentUser } from "@/lib/get-session";
 import { getLeadForUser } from "@/lib/services/lead.service";
 import { recordActivity } from "@/lib/services/activity.service";
+import { permissions, ForbiddenError } from "@/lib/permissions";
 import type { CreateNoteInput } from "@/schemas/note.schema";
 
 export async function addNote(user: CurrentUser, leadId: string, input: CreateNoteInput) {
+  if (!permissions.canAddNote(user.role)) {
+    throw new ForbiddenError("You do not have permission to add notes.");
+  }
+
   // Reuses the same access check as reading the lead - a member can only
   // add notes to leads assigned to them, an admin can note any lead.
   await getLeadForUser(user, leadId);
