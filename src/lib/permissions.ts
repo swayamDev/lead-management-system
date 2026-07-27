@@ -16,17 +16,14 @@ export type SessionUser = {
 
 export const permissions = {
   // Leads
-  canViewAllLeads: (role: Role) => role === "ADMIN",
   canCreateLeadManually: (role: Role) => role === "ADMIN",
   canDeleteLead: (role: Role) => role === "ADMIN",
   canAssignLead: (role: Role) => role === "ADMIN",
   canChangeLeadStatus: (role: Role) => role === "ADMIN" || role === "MEMBER", // both roles, but scoped to their own leads for members
   canAddNote: (role: Role) => role === "ADMIN" || role === "MEMBER",
-  canViewAnalytics: (role: Role) => role === "ADMIN",
 
   // Users
   canCreateUser: (role: Role) => role === "ADMIN",
-  canDeleteUser: (role: Role) => role === "ADMIN",
   canViewUsers: (role: Role) => role === "ADMIN",
 };
 
