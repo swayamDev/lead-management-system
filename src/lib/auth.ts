@@ -10,11 +10,9 @@ export const auth = betterAuth({
     enabled: true,
   },
   session: {
-    // Without this, every getSession() call - which is every page
-    // load and every navigation - hits the database. This signs a
-    // short-lived copy of the session into the cookie itself, so most
-    // checks are verified from the cookie alone; the DB is only
-    // re-queried once the cache expires (or the session changes).
+    // Caches the session in a signed cookie so most page loads and
+    // navigations don't hit the database; only re-queried once the
+    // cache expires or the session changes.
     cookieCache: {
       enabled: true,
       maxAge: 60, // seconds
@@ -25,9 +23,9 @@ export const auth = betterAuth({
       role: {
         type: "string",
         defaultValue: "MEMBER",
-        // Only an admin can change this via the API - see /api/admin/users.
-        // Better Auth otherwise treats additionalFields as user-editable,
-        // so we exclude it from the client-facing update surface.
+        // Only an admin can change this, via /api/admin/users. Better Auth
+        // otherwise treats additionalFields as user-editable, so we exclude
+        // it from the client-facing update surface.
         input: false,
       },
     },

@@ -6,12 +6,12 @@ import { jsonError, jsonOk } from "@/lib/api-response";
 
 type Params = { params: Promise<{ id: string }> };
 
-/** GET /api/leads/:id/activity - the full audit trail for one lead. */
+// GET /api/leads/:id/activity: the full audit trail for one lead.
 export async function GET(_request: NextRequest, { params }: Params) {
   try {
     const user = await requireUser();
     const { id } = await params;
-    await getLeadForUser(user, id); // 403s a member trying another user's lead
+    await getLeadForUser(user, id); // throws 403 if this lead isn't the member's
     const activity = await listActivity(id);
     return jsonOk(activity);
   } catch (error) {

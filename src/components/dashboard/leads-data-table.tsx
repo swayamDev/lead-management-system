@@ -11,13 +11,9 @@ import {
 } from "@/components/ui/table";
 import { leadColumns, type LeadRow } from "@/components/dashboard/leads-columns";
 
-/**
- * Rendering only - pagination and filtering are server-driven via the
- * URL (see LeadFilters + the page's searchParams), so this component
- * never re-fetches or re-sorts on its own. That keeps a member's and an
- * admin's view honest: what's on screen is exactly what the server,
- * with its permission checks, decided to send.
- */
+// Rendering only. Pagination and filtering are server-driven via the
+// URL (see LeadFilters and the page's searchParams), so this component
+// never re-fetches or re-sorts on its own.
 export function LeadsDataTable({ data }: { data: LeadRow[] }) {
   const table = useReactTable({
     data,

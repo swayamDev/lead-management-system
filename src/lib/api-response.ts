@@ -2,12 +2,8 @@ import { NextResponse } from "next/server";
 import { ZodError } from "zod";
 import { ForbiddenError, UnauthorizedError } from "@/lib/permissions";
 
-/**
- * One place that turns a thrown error (or a plain object) into a JSON
- * HTTP response with the correct status code. Every /api/* route funnels
- * through this so the API returns consistent, documented status codes
- * instead of always answering 200.
- */
+// Turns a thrown error into a JSON HTTP response with the correct status
+// code. Every /api/* route funnels through this for consistent responses.
 export function jsonOk<T>(data: T, status: 200 | 201 = 200) {
   return NextResponse.json({ data }, { status });
 }

@@ -3,12 +3,9 @@ import { publicLeadSchema } from "@/schemas/lead.schema";
 import { createPublicLead } from "@/lib/services/lead.service";
 import { jsonError, jsonOk } from "@/lib/api-response";
 
-/**
- * POST /api/public/leads
- * No authentication. This is the endpoint the marketing site's capture
- * form submits to. Anyone can call it, so input is validated strictly
- * and nothing here trusts the caller's identity.
- */
+// POST /api/public/leads: no authentication, this is the endpoint the
+// marketing site's capture form submits to. Anyone can call it, so
+// input is validated strictly and nothing here trusts the caller.
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();

@@ -17,7 +17,7 @@ export default function LoginPage() {
         <CardHeader>
           <CardTitle>Sign in</CardTitle>
           <CardDescription>
-            Admin and member accounts are provisioned for you - there is no
+            Admin and member accounts are provisioned for you; there is no
             public signup for this app.
           </CardDescription>
         </CardHeader>

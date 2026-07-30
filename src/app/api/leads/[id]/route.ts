@@ -6,7 +6,7 @@ import { jsonError, jsonOk } from "@/lib/api-response";
 
 type Params = { params: Promise<{ id: string }> };
 
-/** GET /api/leads/:id */
+// GET /api/leads/:id
 export async function GET(_request: NextRequest, { params }: Params) {
   try {
     const user = await requireUser();
@@ -18,7 +18,7 @@ export async function GET(_request: NextRequest, { params }: Params) {
   }
 }
 
-/** PATCH /api/leads/:id - status change, reassignment, or field edits. */
+// PATCH /api/leads/:id: status change, reassignment, or field edits.
 export async function PATCH(request: NextRequest, { params }: Params) {
   try {
     const user = await requireUser();
@@ -32,7 +32,7 @@ export async function PATCH(request: NextRequest, { params }: Params) {
   }
 }
 
-/** DELETE /api/leads/:id - admin only. */
+// DELETE /api/leads/:id: admin only.
 export async function DELETE(_request: NextRequest, { params }: Params) {
   try {
     const user = await requireUser();

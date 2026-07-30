@@ -10,7 +10,7 @@ export async function addNote(user: CurrentUser, leadId: string, input: CreateNo
     throw new ForbiddenError("You do not have permission to add notes.");
   }
 
-  // Reuses the same access check as reading the lead - a member can only
+  // Reuses the same access check as reading the lead: a member can only
   // add notes to leads assigned to them, an admin can note any lead.
   await getLeadForUser(user, leadId);
 

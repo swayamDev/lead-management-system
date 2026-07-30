@@ -1,10 +1,8 @@
-/**
- * Seeds one Admin and one Member account for local dev / the graders,
- * plus a couple of sample leads so the pipeline isn't empty on first
- * login. Safe to re-run - it skips anything that already exists.
- *
- * Run with: pnpm db:seed
- */
+// Seeds one Admin and one Member account for local dev and the graders,
+// plus a couple of sample leads so the pipeline isn't empty on first
+// login. Safe to re-run; it skips anything that already exists.
+//
+// Run with: pnpm db:seed
 import "dotenv/config";
 import { auth } from "@/lib/auth";
 import prisma from "@/lib/prisma";

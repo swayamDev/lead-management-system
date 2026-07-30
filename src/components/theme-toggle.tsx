@@ -25,12 +25,9 @@ const options = [
 
 export function ThemeToggle() {
   const { theme, setTheme } = useTheme();
-  // Avoids a hydration mismatch: the server doesn't know the user's
-  // system/stored preference, so render a neutral icon until mounted.
+  // Server doesn't know the client's stored/system theme preference, so
+  // render a neutral icon until mounted to avoid a hydration mismatch.
   const [mounted, setMounted] = useState(false);
-  // Standard next-themes hydration guard: server can't know the client's
-  // stored/system preference, so we defer showing it by one tick after
-  // mount (the resulting one-frame icon swap is intentional, not a bug).
   // eslint-disable-next-line react-hooks/set-state-in-effect
   useEffect(() => setMounted(true), []);
 

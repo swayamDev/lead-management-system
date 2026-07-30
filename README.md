@@ -1,15 +1,15 @@
-# Digital Heroes CRM — Lead Management Platform
+# Digital Heroes CRM: Lead Management Platform
 
 A small CRM for capturing, assigning, and tracking sales leads, built for
 the Digital Heroes Full Stack Development task.
 
-- **Public capture form** — no login required, writes straight to the DB
-- **Two roles** — Admin (full control) and Member (scoped to their own leads),
+- **Public capture form**: no login required, writes straight to the DB
+- **Two roles**: Admin (full control) and Member (scoped to their own leads),
   enforced on both the client (hidden UI) and the server (403s)
-- **Lead lifecycle** — status pipeline, assignment, timestamped notes, and
+- **Lead lifecycle**: status pipeline, assignment, timestamped notes, and
   an append-only activity trail
-- **JSON REST API** — paginated, filterable, documented below
-- **Tests** — auth/permission rules + core flows
+- **JSON REST API**: paginated, filterable, documented below
+- **Tests**: auth/permission rules and core flows
 - **Deployed on Vercel + Neon Postgres**
 
 Live app: `<add your deployed URL here>`
@@ -51,21 +51,21 @@ Rotate/replace these before sharing the deployed app publicly.
 
 ```
 Request
-  -> Route handler (src/app/api/**)      - auth check, zod validation, HTTP status
-  -> Service layer (src/lib/services/**) - permission + ownership rules, business logic
-  -> Prisma (src/lib/prisma.ts)          - data access
+  -> Route handler (src/app/api/**)       auth check, zod validation, HTTP status
+  -> Service layer (src/lib/services/**)  permission + ownership rules, business logic
+  -> Prisma (src/lib/prisma.ts)           data access
   -> Postgres (Neon)
 ```
 
 - **`src/lib/permissions.ts`** is the single source of truth for what each
   role can do. Both the dashboard UI (to hide buttons) and the API routes
   (to actually enforce access) import from here, so they can't drift apart.
-- **Ownership, not just role**, gates access to a lead: `canAccessLead()`
+- **Ownership, not just role, gates access to a lead.** `canAccessLead()`
   checks the row's `assignedToId` against the current user, so a Member
   can never reach another Member's lead by guessing an id, even though
   both are the same role.
 - **Activity is append-only.** Every status change, assignment, and note
-  writes a row to `Activity` and nothing there is ever edited or deleted -
+  writes a row to `Activity`, and nothing there is ever edited or deleted:
   it's the audit trail for the lead.
 - There is **no public signup**. Admins provision Member/Admin accounts
   from `/dashboard/admin/users`; the role field on `User` is marked
@@ -75,13 +75,13 @@ Request
 
 ```
 User (id, name, email, role: ADMIN|MEMBER)
-  1 -- * Lead (assignedTo)
-  1 -- * Note (author)
-  1 -- * Activity (actor)
+  1:N Lead (assignedTo)
+  1:N Note (author)
+  1:N Activity (actor)
 
 Lead (id, name, email, phone, company, message, budget, source, status, assignedToId)
-  1 -- * Note
-  1 -- * Activity
+  1:N Note
+  1:N Activity
 
 LeadStatus: NEW -> CONTACTED -> QUALIFIED -> PROPOSAL_SENT -> NEGOTIATION -> WON | LOST
 LeadSource: WEBSITE | REFERRAL | LINKEDIN | COLD_OUTREACH | EVENT | OTHER
@@ -112,7 +112,7 @@ success or `{ error: string }` on failure.
 | `GET`    | `/api/leads`     | any            | Paginated, filtered list. Query params: `page`, `perPage` (max 100), `status`, `assignedTo` (admin only), `company`, `source`, `search`. |
 | `POST`   | `/api/leads`     | admin          | Create a lead manually. `403` for members.                                                                                               |
 | `GET`    | `/api/leads/:id` | owner or admin | Fetch one lead with notes. `403` if it's not yours, `404` if it doesn't exist.                                                           |
-| `PATCH`  | `/api/leads/:id` | owner or admin | Update status/fields. Reassignment (`assignedToId`) is admin-only - `403` for members.                                                   |
+| `PATCH`  | `/api/leads/:id` | owner or admin | Update status/fields. Reassignment (`assignedToId`) is admin-only, `403` for members.                                                    |
 | `DELETE` | `/api/leads/:id` | admin          | `403` for members.                                                                                                                       |
 
 ### Notes & activity
@@ -165,8 +165,8 @@ Playwright needs its browser binaries once per machine:
 prisma/                    schema, migrations, seed script
 src/lib/                   auth, prisma client, permissions, api-response helper
 src/lib/services/          business logic (lead, note, activity, user)
-src/schemas/               zod validation, shared by forms and API routes
-src/app/api/                route handlers (thin - validate, call service, respond)
+src/schemas/                zod validation, shared by forms and API routes
+src/app/api/                route handlers (thin: validate, call service, respond)
 src/app/dashboard/          authenticated pages
 src/app/page.tsx           public lead capture landing page
 src/components/            ui/ = design-system primitives (untouched theme),

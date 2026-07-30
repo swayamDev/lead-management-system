@@ -2,7 +2,7 @@ import { PrismaClient } from "@/generated/prisma/client";
 import { PrismaNeon } from "@prisma/adapter-neon";
 
 const adapter = new PrismaNeon({
-  connectionString: process.env.DATABASE_URL!, // pooled URL at runtime
+  connectionString: process.env.DATABASE_URL!,
 });
 
 const globalForPrisma = global as unknown as {

@@ -1,12 +1,6 @@
-/**
- * Central authorization rules for the app.
- *
- * These functions are the single source of truth for what each role can
- * do. They are imported on the SERVER (API routes) to enforce access,
- * and on the CLIENT (dashboard components) to decide what to render.
- * Keeping the logic in one place means the client and server can never
- * silently drift apart.
- */
+// Single source of truth for what each role can do. Used on the server
+// (API routes) to enforce access, and on the client (dashboard) to decide
+// what to render.
 import type { Role } from "@/generated/prisma/enums";
 
 export type SessionUser = {
@@ -19,7 +13,7 @@ export const permissions = {
   canCreateLeadManually: (role: Role) => role === "ADMIN",
   canDeleteLead: (role: Role) => role === "ADMIN",
   canAssignLead: (role: Role) => role === "ADMIN",
-  canChangeLeadStatus: (role: Role) => role === "ADMIN" || role === "MEMBER", // both roles, but scoped to their own leads for members
+  canChangeLeadStatus: (role: Role) => role === "ADMIN" || role === "MEMBER", // scoped to own leads for members
   canAddNote: (role: Role) => role === "ADMIN" || role === "MEMBER",
 
   // Users
@@ -27,11 +21,8 @@ export const permissions = {
   canViewUsers: (role: Role) => role === "ADMIN",
 };
 
-/**
- * A member may only act on leads assigned to them. An admin may act on
- * any lead. This is checked against the actual row, not just the role,
- * so a member can never reach another member's lead by guessing an id.
- */
+// A member may only act on leads assigned to them; an admin may act on
+// any lead. Checked against the actual row, not just the role.
 export function canAccessLead(user: SessionUser, lead: { assignedToId: string | null }) {
   if (user.role === "ADMIN") return true;
   return lead.assignedToId === user.id;

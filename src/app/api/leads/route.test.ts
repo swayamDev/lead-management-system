@@ -2,7 +2,7 @@ import { describe, expect, it, vi, beforeEach } from "vitest";
 import { NextRequest } from "next/server";
 
 // Mock the session and prisma layers so this test exercises real
-// route + service + permission logic without touching a database.
+// route, service, and permission logic without touching a database.
 vi.mock("@/lib/get-session", () => ({
   requireUser: vi.fn(),
 }));
@@ -90,7 +90,7 @@ describe("POST /api/leads", () => {
       name: "Alex Admin",
       email: "admin@test.com",
     });
-    // Test mocks only need the fields the route actually reads - casting
+    // Test mocks only need the fields the route actually reads; casting
     // to the full Prisma return type isn't worth it here.
     /* eslint-disable @typescript-eslint/no-explicit-any */
     mockedPrisma.lead.create.mockResolvedValue({

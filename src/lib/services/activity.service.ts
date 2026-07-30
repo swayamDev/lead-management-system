@@ -1,11 +1,8 @@
 import prisma from "@/lib/prisma";
 import type { ActivityType } from "@/generated/prisma/enums";
 
-/**
- * Every meaningful change to a lead writes one row here. Nothing is ever
- * updated or deleted from this table - it's an append-only trail, the
- * same way GitHub's issue timeline never disappears.
- */
+// Every meaningful change to a lead writes one row here. This table is
+// append-only; rows are never updated or deleted.
 export async function recordActivity(params: {
   leadId: string;
   type: ActivityType;

@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-/** Matches the LeadStatus / LeadSource enums in prisma/schema.prisma. */
+// Matches the LeadStatus / LeadSource enums in prisma/schema.prisma.
 export const leadStatusValues = [
   "NEW",
   "CONTACTED",
@@ -20,7 +20,7 @@ export const leadSourceValues = [
   "OTHER",
 ] as const;
 
-/** Public capture form - anyone can submit this, no auth required. */
+// Public capture form: anyone can submit this, no auth required.
 export const publicLeadSchema = z.object({
   name: z.string().trim().min(1, "Name is required").max(120),
   email: z.string().trim().email("Enter a valid email address"),
@@ -33,14 +33,14 @@ export const publicLeadSchema = z.object({
 
 export type PublicLeadInput = z.infer<typeof publicLeadSchema>;
 
-/** Admin-created lead from inside the dashboard. */
+// Admin-created lead from inside the dashboard.
 export const createLeadSchema = publicLeadSchema.extend({
   assignedToId: z.string().cuid2().or(z.string().min(1)).optional(),
 });
 
 export type CreateLeadInput = z.infer<typeof createLeadSchema>;
 
-/** Partial update - status change and/or reassignment. */
+// Partial update: status change and/or reassignment.
 export const updateLeadSchema = z.object({
   status: z.enum(leadStatusValues).optional(),
   assignedToId: z.string().min(1).nullable().optional(),
@@ -53,7 +53,7 @@ export const updateLeadSchema = z.object({
 
 export type UpdateLeadInput = z.infer<typeof updateLeadSchema>;
 
-/** Query-string params accepted by GET /api/leads. */
+// Query-string params accepted by GET /api/leads.
 export const leadListQuerySchema = z.object({
   page: z.coerce.number().int().min(1).default(1),
   perPage: z.coerce.number().int().min(1).max(100).default(20),

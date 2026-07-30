@@ -1,9 +1,7 @@
 import { defineConfig, devices } from "@playwright/test";
 
-/**
- * Browsers aren't installed in every environment - run
- * `npx playwright install` once before the first `pnpm test:e2e`.
- */
+// Browsers aren't installed in every environment; run
+// `npx playwright install` once before the first `pnpm test:e2e`.
 export default defineConfig({
   testDir: "./e2e",
   fullyParallel: true,

@@ -4,12 +4,9 @@ import { createLeadSchema, leadListQuerySchema } from "@/schemas/lead.schema";
 import { createLead, listLeads } from "@/lib/services/lead.service";
 import { jsonError, jsonOk } from "@/lib/api-response";
 
-/**
- * GET /api/leads?page=1&perPage=20&status=won&assignedTo=<id>&company=Acme&source=LINKEDIN&search=jane
- * Returns a paginated, filtered list. Admins see every lead; members
- * only ever see leads assigned to them (enforced in the service layer,
- * not just by the query params the client happens to send).
- */
+// GET /api/leads?page=1&perPage=20&status=won&assignedTo=<id>&company=Acme&source=LINKEDIN&search=jane
+// Returns a paginated, filtered list. Admins see every lead; members
+// only ever see leads assigned to them (enforced in the service layer).
 export async function GET(request: NextRequest) {
   try {
     const user = await requireUser();
@@ -23,7 +20,7 @@ export async function GET(request: NextRequest) {
   }
 }
 
-/** POST /api/leads - admin-only manual lead creation. */
+// POST /api/leads: admin-only manual lead creation.
 export async function POST(request: NextRequest) {
   try {
     const user = await requireUser();

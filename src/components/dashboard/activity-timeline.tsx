@@ -14,11 +14,8 @@ const typeLabel: Record<string, string> = {
   NOTE_ADDED: "Note added",
 };
 
-/**
- * Read-only, append-only trail - there is no edit or delete affordance
- * here on purpose, mirroring that the underlying Activity rows are
- * never mutated once written.
- */
+// Read-only, append-only trail: there is no edit or delete affordance
+// here, mirroring that the underlying Activity rows are never mutated.
 export function ActivityTimeline({ items }: { items: ActivityItem[] }) {
   if (items.length === 0) {
     return <p className="text-sm text-muted-foreground">No activity yet.</p>;
@@ -31,11 +28,11 @@ export function ActivityTimeline({ items }: { items: ActivityItem[] }) {
           <span className="absolute -left-[21px] top-1 size-2 rounded-full bg-primary" />
           <p>
             <span className="font-medium">{typeLabel[item.type] ?? item.type}</span>
-            {" - "}
+            {" · "}
             <span className="text-muted-foreground">{item.message}</span>
           </p>
           <p className="text-xs text-muted-foreground">
-            {item.actor?.name ?? "System"} - {new Date(item.createdAt).toLocaleString()}
+            {item.actor?.name ?? "System"} · {new Date(item.createdAt).toLocaleString()}
           </p>
         </li>
       ))}

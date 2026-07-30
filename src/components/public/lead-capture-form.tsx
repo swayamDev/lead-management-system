@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
@@ -25,10 +25,9 @@ import {
 import { z } from "zod";
 import { publicLeadSchema, type PublicLeadInput } from "@/schemas/lead.schema";
 
-// react-hook-form needs the *input* shape (pre-coercion) for its generic,
-// since z.coerce.number() accepts unknown but z.infer resolves to the
-// post-coercion output type - using the output type here causes a
-// resolver/generic mismatch.
+// react-hook-form needs the *input* shape (pre-coercion) for its generic:
+// z.coerce.number() accepts unknown but z.infer resolves to the
+// post-coercion output type, which causes a resolver/generic mismatch.
 type LeadFormValues = z.input<typeof publicLeadSchema>;
 
 const sourceOptions: { value: PublicLeadInput["source"]; label: string }[] = [
@@ -48,13 +47,15 @@ export function LeadCaptureForm() {
     register,
     handleSubmit,
     setValue,
-    watch,
+    control,
     reset,
     formState: { errors },
   } = useForm<LeadFormValues>({
     resolver: zodResolver(publicLeadSchema),
     defaultValues: { source: "WEBSITE" },
   });
+
+  const sourceValue = useWatch({ control, name: "source" });
 
   async function onSubmit(values: LeadFormValues) {
     setSubmitting(true);
@@ -72,7 +73,7 @@ export function LeadCaptureForm() {
 
       setSubmitted(true);
       reset();
-      toast.success("Thanks - we'll be in touch shortly.");
+      toast.success("Thanks, we'll be in touch shortly.");
     } catch (error) {
       toast.error(error instanceof Error ? error.message : "Could not submit.");
     } finally {
@@ -82,12 +83,17 @@ export function LeadCaptureForm() {
 
   if (submitted) {
     return (
-      <div className="rounded-none border border-border bg-card p-6 text-sm">
+      <div className="border-border bg-card rounded-none border p-6 text-sm">
         <p className="font-medium">Thanks for reaching out.</p>
-        <p className="mt-1 text-muted-foreground">
+        <p className="text-muted-foreground mt-1">
           A member of our team will follow up soon.
         </p>
-        <Button variant="outline" size="sm" className="mt-4" onClick={() => setSubmitted(false)}>
+        <Button
+          variant="outline"
+          size="sm"
+          className="mt-4"
+          onClick={() => setSubmitted(false)}
+        >
           Submit another
         </Button>
       </div>
@@ -101,7 +107,9 @@ export function LeadCaptureForm() {
           <FieldLabel htmlFor="name">Name</FieldLabel>
           <FieldContent>
             <Input id="name" {...register("name")} />
-            {errors.name && <FieldError errors={[{ message: errors.name.message }]} />}
+            {errors.name && (
+              <FieldError errors={[{ message: errors.name.message }]} />
+            )}
           </FieldContent>
         </Field>
 
@@ -109,7 +117,9 @@ export function LeadCaptureForm() {
           <FieldLabel htmlFor="email">Email</FieldLabel>
           <FieldContent>
             <Input id="email" type="email" {...register("email")} />
-            {errors.email && <FieldError errors={[{ message: errors.email.message }]} />}
+            {errors.email && (
+              <FieldError errors={[{ message: errors.email.message }]} />
+            )}
           </FieldContent>
         </Field>
 
@@ -138,8 +148,10 @@ export function LeadCaptureForm() {
           <FieldLabel htmlFor="source">How did you hear about us?</FieldLabel>
           <FieldContent>
             <Select
-              value={watch("source")}
-              onValueChange={(value) => setValue("source", value as PublicLeadInput["source"])}
+              value={sourceValue}
+              onValueChange={(value) =>
+                setValue("source", value as PublicLeadInput["source"])
+              }
             >
               <SelectTrigger id="source" className="w-full">
                 <SelectValue placeholder="Select a source" />

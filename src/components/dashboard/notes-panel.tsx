@@ -63,7 +63,7 @@ export function NotesPanel({ leadId, notes }: { leadId: string; notes: Note[] })
           <div key={note.id} className="rounded-none border p-3 text-sm">
             <p>{note.text}</p>
             <p className="mt-2 text-xs text-muted-foreground">
-              {note.author.name} - {new Date(note.createdAt).toLocaleString()}
+              {note.author.name} · {new Date(note.createdAt).toLocaleString()}
             </p>
           </div>
         ))}

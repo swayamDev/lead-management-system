@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
 
@@ -18,7 +18,13 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Field, FieldContent, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field";
+import {
+  Field,
+  FieldContent,
+  FieldError,
+  FieldGroup,
+  FieldLabel,
+} from "@/components/ui/field";
 import {
   Select,
   SelectContent,
@@ -39,13 +45,15 @@ export function CreateUserDialog() {
     register,
     handleSubmit,
     setValue,
-    watch,
+    control,
     reset,
     formState: { errors },
   } = useForm<FormValues>({
     resolver: zodResolver(createUserSchema),
     defaultValues: { role: "MEMBER" },
   });
+
+  const roleValue = useWatch({ control, name: "role" });
 
   async function onSubmit(values: FormValues) {
     setSubmitting(true);
@@ -64,7 +72,9 @@ export function CreateUserDialog() {
       setOpen(false);
       router.refresh();
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : "Could not create user.");
+      toast.error(
+        error instanceof Error ? error.message : "Could not create user.",
+      );
     } finally {
       setSubmitting(false);
     }
@@ -77,8 +87,8 @@ export function CreateUserDialog() {
         <DialogHeader>
           <DialogTitle>Create a team member</DialogTitle>
           <DialogDescription>
-            There&apos;s no public signup - accounts are provisioned here. Share the
-            password with them directly.
+            There&apos;s no public signup. Accounts are provisioned here, so
+            share the password with them directly.
           </DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit(onSubmit)} noValidate>
@@ -87,14 +97,18 @@ export function CreateUserDialog() {
               <FieldLabel htmlFor="name">Name</FieldLabel>
               <FieldContent>
                 <Input id="name" {...register("name")} />
-                {errors.name && <FieldError errors={[{ message: errors.name.message }]} />}
+                {errors.name && (
+                  <FieldError errors={[{ message: errors.name.message }]} />
+                )}
               </FieldContent>
             </Field>
             <Field data-invalid={!!errors.email}>
               <FieldLabel htmlFor="email">Email</FieldLabel>
               <FieldContent>
                 <Input id="email" type="email" {...register("email")} />
-                {errors.email && <FieldError errors={[{ message: errors.email.message }]} />}
+                {errors.email && (
+                  <FieldError errors={[{ message: errors.email.message }]} />
+                )}
               </FieldContent>
             </Field>
             <Field data-invalid={!!errors.password}>
@@ -110,8 +124,10 @@ export function CreateUserDialog() {
               <FieldLabel htmlFor="role">Role</FieldLabel>
               <FieldContent>
                 <Select
-                  value={watch("role")}
-                  onValueChange={(value) => setValue("role", value as FormValues["role"])}
+                  value={roleValue}
+                  onValueChange={(value) =>
+                    setValue("role", value as FormValues["role"])
+                  }
                 >
                   <SelectTrigger id="role" className="w-full">
                     <SelectValue />

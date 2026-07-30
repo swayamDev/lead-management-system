@@ -6,7 +6,7 @@ import { jsonError, jsonOk } from "@/lib/api-response";
 
 type Params = { params: Promise<{ id: string }> };
 
-/** GET /api/leads/:id/notes */
+// GET /api/leads/:id/notes
 export async function GET(_request: NextRequest, { params }: Params) {
   try {
     const user = await requireUser();
@@ -18,7 +18,7 @@ export async function GET(_request: NextRequest, { params }: Params) {
   }
 }
 
-/** POST /api/leads/:id/notes */
+// POST /api/leads/:id/notes
 export async function POST(request: NextRequest, { params }: Params) {
   try {
     const user = await requireUser();

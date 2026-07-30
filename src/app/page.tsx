@@ -14,7 +14,7 @@ export default function HomePage() {
         <Card>
           <CardHeader>
             <CardTitle>Get in touch</CardTitle>
-            <CardDescription>No account needed - this goes straight to our team.</CardDescription>
+            <CardDescription>No account needed. This goes straight to our team.</CardDescription>
           </CardHeader>
           <CardContent>
             <LeadCaptureForm />

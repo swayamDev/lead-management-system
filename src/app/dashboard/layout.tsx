@@ -8,12 +8,9 @@ import {
 import { AppSidebar } from "@/components/dashboard/app-sidebar";
 import { Separator } from "@/components/ui/separator";
 
-/**
- * Everything under /dashboard is authenticated (also enforced by
- * proxy.ts at the edge). This layout re-checks the session
- * server-side because middleware only proves "has a cookie", not
- * "cookie is a valid, current session" - the source of truth is here.
- */
+// Everything under /dashboard is authenticated (also enforced by
+// proxy.ts at the edge). This layout re-checks the session server-side,
+// since middleware only proves "has a cookie", not "is a valid session".
 export default async function DashboardLayout({
   children,
 }: {

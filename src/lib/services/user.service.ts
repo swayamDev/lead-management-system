@@ -6,11 +6,7 @@ import { permissions, ForbiddenError } from "@/lib/permissions";
 import { BadRequestError } from "@/lib/api-response";
 import type { CreateUserInput } from "@/schemas/user.schema";
 
-/**
- * Admin-only. There is no public signup - accounts are provisioned here,
- * which is why the brief lists "create users" as an admin capability
- * rather than a public route.
- */
+// Admin-only. There is no public signup; accounts are provisioned here.
 export async function createUser(admin: CurrentUser, input: CreateUserInput) {
   if (!permissions.canCreateUser(admin.role)) {
     throw new ForbiddenError("Only admins can create user accounts.");
@@ -21,14 +17,14 @@ export async function createUser(admin: CurrentUser, input: CreateUserInput) {
     throw new BadRequestError("A user with that email already exists.");
   }
 
-  // Better Auth owns account/session creation (password hashing, etc).
+  // Better Auth owns account/session creation, including password hashing.
   const result = await auth.api.signUpEmail({
     body: { email: input.email, password: input.password, name: input.name },
     headers: await headers(),
   });
 
-  // `role` is marked input: false in auth.ts (users can't self-elevate),
-  // so we set it directly here, the one place that's allowed to.
+  // `role` is marked input: false in auth.ts so users can't self-elevate;
+  // this is the one place allowed to set it directly.
   const user = await prisma.user.update({
     where: { id: result.user.id },
     data: { role: input.role },

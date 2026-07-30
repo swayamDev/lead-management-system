@@ -10,7 +10,7 @@ import type {
   UpdateLeadInput,
 } from "@/schemas/lead.schema";
 
-/** Anyone can submit the public capture form - no auth, no permission check. */
+// Anyone can submit the public capture form: no auth, no permission check.
 export async function createPublicLead(input: PublicLeadInput) {
   const lead = await prisma.lead.create({
     data: {
@@ -33,7 +33,7 @@ export async function createPublicLead(input: PublicLeadInput) {
   return lead;
 }
 
-/** Admin-only: create a lead manually from inside the dashboard. */
+// Admin-only: create a lead manually from inside the dashboard.
 export async function createLead(user: CurrentUser, input: CreateLeadInput) {
   if (!permissions.canCreateLeadManually(user.role)) {
     throw new ForbiddenError("Only admins can create leads manually.");
@@ -71,11 +71,8 @@ export async function createLead(user: CurrentUser, input: CreateLeadInput) {
   return lead;
 }
 
-/**
- * Paginated, filterable list. Admins see every lead; members only ever
- * see their own assigned leads - that scoping happens in the `where`
- * clause below, not just by hiding rows in the UI.
- */
+// Paginated, filterable list. Admins see every lead; members only ever
+// see their own assigned leads, scoped in the `where` clause below.
 export async function listLeads(user: CurrentUser, query: LeadListQuery) {
   const where: Record<string, unknown> = {};
 

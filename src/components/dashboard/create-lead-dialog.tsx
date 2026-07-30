@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
 
@@ -18,7 +18,13 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Field, FieldContent, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field";
+import {
+  Field,
+  FieldContent,
+  FieldError,
+  FieldGroup,
+  FieldLabel,
+} from "@/components/ui/field";
 import {
   Select,
   SelectContent,
@@ -43,13 +49,16 @@ export function CreateLeadDialog({
     register,
     handleSubmit,
     setValue,
-    watch,
+    control,
     reset,
     formState: { errors },
   } = useForm<FormValues>({
     resolver: zodResolver(createLeadSchema),
     defaultValues: { source: "OTHER" },
   });
+
+  const sourceValue = useWatch({ control, name: "source" });
+  const assignedToIdValue = useWatch({ control, name: "assignedToId" });
 
   async function onSubmit(values: FormValues) {
     setSubmitting(true);
@@ -68,7 +77,9 @@ export function CreateLeadDialog({
       setOpen(false);
       router.refresh();
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : "Could not create lead.");
+      toast.error(
+        error instanceof Error ? error.message : "Could not create lead.",
+      );
     } finally {
       setSubmitting(false);
     }
@@ -81,7 +92,8 @@ export function CreateLeadDialog({
         <DialogHeader>
           <DialogTitle>Create a lead</DialogTitle>
           <DialogDescription>
-            For leads that came in outside the public form (a call, an event, etc).
+            For leads that came in outside the public form (a call, an event,
+            etc).
           </DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit(onSubmit)} noValidate>
@@ -90,14 +102,18 @@ export function CreateLeadDialog({
               <FieldLabel htmlFor="name">Name</FieldLabel>
               <FieldContent>
                 <Input id="name" {...register("name")} />
-                {errors.name && <FieldError errors={[{ message: errors.name.message }]} />}
+                {errors.name && (
+                  <FieldError errors={[{ message: errors.name.message }]} />
+                )}
               </FieldContent>
             </Field>
             <Field data-invalid={!!errors.email}>
               <FieldLabel htmlFor="email">Email</FieldLabel>
               <FieldContent>
                 <Input id="email" type="email" {...register("email")} />
-                {errors.email && <FieldError errors={[{ message: errors.email.message }]} />}
+                {errors.email && (
+                  <FieldError errors={[{ message: errors.email.message }]} />
+                )}
               </FieldContent>
             </Field>
             <Field>
@@ -110,7 +126,7 @@ export function CreateLeadDialog({
               <FieldLabel htmlFor="source">Source</FieldLabel>
               <FieldContent>
                 <Select
-                  value={watch("source")}
+                  value={sourceValue}
                   onValueChange={(value) =>
                     setValue("source", value as FormValues["source"])
                   }
@@ -132,8 +148,10 @@ export function CreateLeadDialog({
               <FieldLabel htmlFor="assignedToId">Assign to</FieldLabel>
               <FieldContent>
                 <Select
-                  value={watch("assignedToId") ?? ""}
-                  onValueChange={(value) => setValue("assignedToId", value || undefined)}
+                  value={assignedToIdValue ?? ""}
+                  onValueChange={(value) =>
+                    setValue("assignedToId", value || undefined)
+                  }
                 >
                   <SelectTrigger id="assignedToId" className="w-full">
                     <SelectValue placeholder="Unassigned" />
